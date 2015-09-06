@@ -1,8 +1,11 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Xadrez {
     public static void main (String args[]) {
         Random rn = new Random();
+        Scanner in = new Scanner(System.in);
+        
         char [][] chessboard = {
             {'o','o','o','o','o','o','o','o'},
             {'o','o','o','o','o','o','o','o'},
@@ -19,6 +22,7 @@ public class Xadrez {
         int x, y, k, n, dstx, dsty;
         char Torre, Bispo, Reset;
         boolean assignment, clean;
+        String End;
         
         Torre = 'T';
         Bispo = 'B';
@@ -27,125 +31,113 @@ public class Xadrez {
         n = 8;
         assignment = true;
         clean = true;
+        End = "";
         
-        for (int i = 0; i < 2; i++){
-            x = rn.nextInt(8);
-            y = rn.nextInt(8);
-            System.out.println(x + " " + y);
-            chessboard[y][x] = Torre;
-            if (i == 1) {
-                k=1;
-                minimatrixtorre[k][0] = x;
-                minimatrixtorre[k][k] = y;
-            }
-            else{
-                minimatrixtorre[0][0] = x;
-                minimatrixtorre[0][k+1] = y;
-            }
-        }
-        k = 0;
-        for (int i = 0; i < 2; i++){
-            x = rn.nextInt(8);
-            y = rn.nextInt(8);
-            System.out.println(x + " " + y);
-            chessboard[y][x] = Bispo;
-            if (i == 1) {
-                k=1;
-                minimatrixbispo[k][0] = x;
-                minimatrixbispo[k][k] = y;
-            }
-            else{
-                minimatrixbispo[0][k] = x;
-                minimatrixbispo[0][k+1] = y;
-            }
-        }
-        while (assignment) {
-            if (clean == false) {
-                clean = true;
-                for (int i = 0; i < n; i++) {
-                    for(int j = 0; j < n; j++){
-                        chessboard[i][j] = Reset;
-                    }
-                }
-                for (int i = 0; i < 2; i++) {
-                    if (i==1){
-                        x = minimatrixtorre[i][0];
-                        y = minimatrixtorre[i][i];
-                        chessboard[y][x] = Torre;
-                    }
-                    else {
-                        x = minimatrixtorre[0][0];
-                        y = minimatrixtorre[0][i+1];
-                        chessboard[y][x] = Torre;
-                    }  
-                }
-                for (int i = 0; i < 2; i++) {
-                    if (i==1){
-                        x = minimatrixbispo[i][0];
-                        y = minimatrixbispo[i][i];
-                        chessboard[y][x] = Bispo;
-                    }
-                    else {
-                        x = minimatrixbispo[0][0];
-                        y = minimatrixbispo[0][i+1];
-                        chessboard[y][x] = Bispo;
-                    }  
+        while (!End.equals("fim")) {
+            
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++){
+                    chessboard[i][j] = Reset;
                 }
             }
-            if (minimatrixtorre[0][0]==minimatrixtorre[1][0] || minimatrixtorre[0][1] == minimatrixtorre[1][1]) {
-                x = minimatrixtorre[1][0];
-                y = minimatrixtorre[1][1];
-                chessboard[y][x] = Reset;
+            for (int i=0; i<2; i++){
+                for (int j = 0; j < 2; j++){
+                    minimatrixbispo[i][j] = 0;
+                    minimatrixtorre[i][j] = 0;
+                }
+            }
+            k = 0;
+            for (int i = 0; i < 2; i++){
                 x = rn.nextInt(8);
                 y = rn.nextInt(8);
-                minimatrixtorre[1][0] = x;
-                minimatrixtorre[1][1] = y;
+                System.out.println(x + " " + y);
                 chessboard[y][x] = Torre;
-                clean = false;
-                assignment = true;
+                if (i == 1) {
+                    k=1;
+                    minimatrixtorre[k][0] = x;
+                    minimatrixtorre[k][k] = y;
+                }
+                else{
+                    minimatrixtorre[0][0] = x;
+                    minimatrixtorre[0][k+1] = y;
+                }
             }
-            else if (minimatrixbispo[0][0]==minimatrixbispo[1][0] && minimatrixbispo[0][1] == minimatrixbispo[1][1]) {
-                x = minimatrixbispo[1][0];
-                y = minimatrixbispo[1][1];
-                chessboard[y][x] = Reset;
+            k = 0;
+            for (int i = 0; i < 2; i++){
                 x = rn.nextInt(8);
                 y = rn.nextInt(8);
-                minimatrixbispo[1][0] = x;
-                minimatrixbispo[1][1] = y;
+                System.out.println(x + " " + y);
                 chessboard[y][x] = Bispo;
-                clean = false;
+                if (i == 1) {
+                    k=1;
+                    minimatrixbispo[k][0] = x;
+                    minimatrixbispo[k][k] = y;
+                }
+                else{
+                    minimatrixbispo[0][k] = x;
+                    minimatrixbispo[0][k+1] = y;
+                }
                 assignment = true;
+                clean = true;
             }
-            else if (minimatrixbispo[0][0]==minimatrixtorre[0][0] || minimatrixbispo[0][1]==minimatrixtorre[0][1] || minimatrixbispo[0][0]==minimatrixtorre[1][0] || minimatrixbispo[0][1]==minimatrixtorre[1][1]) {
-                x = minimatrixbispo[0][0];
-                y = minimatrixbispo[0][1];
-                chessboard[y][x] = Reset;
-                x = rn.nextInt(8);
-                y = rn.nextInt(8);
-                minimatrixbispo[0][0] = x;
-                minimatrixbispo[0][1] = y;
-                chessboard[y][x] = Bispo;
-                clean = false;
-                assignment = true;
-            } 
-            else if (minimatrixbispo[1][0]==minimatrixtorre[0][0] || minimatrixbispo[1][1]==minimatrixtorre[0][1] || minimatrixbispo[1][0]==minimatrixtorre[1][0] || minimatrixbispo[1][1]==minimatrixtorre[1][1]) {
-                x = minimatrixbispo[1][0];
-                y = minimatrixbispo[1][1];
-                chessboard[y][x] = Reset;
-                x = rn.nextInt(8);
-                y = rn.nextInt(8);
-                minimatrixbispo[1][0] = x;
-                minimatrixbispo[1][1] = y;
-                chessboard[y][x] = Bispo;
-                clean = false;
-                assignment = true;
-            }
-            else {
-                x = minimatrixbispo[0][0];
-                y = minimatrixbispo[0][1];
-                dstx = minimatrixbispo[1][0];
-                dsty = minimatrixbispo[1][1];
-                if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
+            while (assignment) {
+                if (clean == false) {
+                    clean = true;
+                    for (int i = 0; i < n; i++) {
+                        for(int j = 0; j < n; j++){
+                            chessboard[i][j] = Reset;
+                        }
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        if (i==1){
+                            x = minimatrixtorre[i][0];
+                            y = minimatrixtorre[i][i];
+                            chessboard[y][x] = Torre;
+                        }
+                        else {
+                            x = minimatrixtorre[0][0];
+                            y = minimatrixtorre[0][i+1];
+                            chessboard[y][x] = Torre;
+                        }  
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        if (i==1){
+                            x = minimatrixbispo[i][0];
+                            y = minimatrixbispo[i][i];
+                            chessboard[y][x] = Bispo;
+                        }
+                        else {
+                            x = minimatrixbispo[0][0];
+                            y = minimatrixbispo[0][i+1];
+                            chessboard[y][x] = Bispo;
+                        }  
+                    }
+                }
+                if (minimatrixtorre[0][0]==minimatrixtorre[1][0] || minimatrixtorre[0][1] == minimatrixtorre[1][1]) {
+                    x = minimatrixtorre[1][0];
+                    y = minimatrixtorre[1][1];
+                    chessboard[y][x] = Reset;
+                    x = rn.nextInt(8);
+                    y = rn.nextInt(8);
+                    minimatrixtorre[1][0] = x;
+                    minimatrixtorre[1][1] = y;
+                    chessboard[y][x] = Torre;
+                    clean = false;
+                    assignment = true;
+                }
+                else if (minimatrixbispo[0][0]==minimatrixbispo[1][0] && minimatrixbispo[0][1] == minimatrixbispo[1][1]) {
+                    x = minimatrixbispo[1][0];
+                    y = minimatrixbispo[1][1];
+                    chessboard[y][x] = Reset;
+                    x = rn.nextInt(8);
+                    y = rn.nextInt(8);
+                    minimatrixbispo[1][0] = x;
+                    minimatrixbispo[1][1] = y;
+                    chessboard[y][x] = Bispo;
+                    clean = false;
+                    assignment = true;
+                }
+                else if (minimatrixbispo[0][0]==minimatrixtorre[0][0] || minimatrixbispo[0][1]==minimatrixtorre[0][1] || minimatrixbispo[0][0]==minimatrixtorre[1][0] || minimatrixbispo[0][1]==minimatrixtorre[1][1]) {
                     x = minimatrixbispo[0][0];
                     y = minimatrixbispo[0][1];
                     chessboard[y][x] = Reset;
@@ -156,12 +148,24 @@ public class Xadrez {
                     chessboard[y][x] = Bispo;
                     clean = false;
                     assignment = true;
+                } 
+                else if (minimatrixbispo[1][0]==minimatrixtorre[0][0] || minimatrixbispo[1][1]==minimatrixtorre[0][1] || minimatrixbispo[1][0]==minimatrixtorre[1][0] || minimatrixbispo[1][1]==minimatrixtorre[1][1]) {
+                    x = minimatrixbispo[1][0];
+                    y = minimatrixbispo[1][1];
+                    chessboard[y][x] = Reset;
+                    x = rn.nextInt(8);
+                    y = rn.nextInt(8);
+                    minimatrixbispo[1][0] = x;
+                    minimatrixbispo[1][1] = y;
+                    chessboard[y][x] = Bispo;
+                    clean = false;
+                    assignment = true;
                 }
                 else {
                     x = minimatrixbispo[0][0];
                     y = minimatrixbispo[0][1];
-                    dstx = minimatrixtorre[0][0];
-                    dsty = minimatrixtorre[0][1];
+                    dstx = minimatrixbispo[1][0];
+                    dsty = minimatrixbispo[1][1];
                     if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
                         x = minimatrixbispo[0][0];
                         y = minimatrixbispo[0][1];
@@ -177,8 +181,8 @@ public class Xadrez {
                     else {
                         x = minimatrixbispo[0][0];
                         y = minimatrixbispo[0][1];
-                        dstx = minimatrixtorre[1][0];
-                        dsty = minimatrixtorre[1][1];
+                        dstx = minimatrixtorre[0][0];
+                        dsty = minimatrixtorre[0][1];
                         if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
                             x = minimatrixbispo[0][0];
                             y = minimatrixbispo[0][1];
@@ -192,18 +196,18 @@ public class Xadrez {
                             assignment = true;
                         }
                         else {
-                            x = minimatrixbispo[1][0];
-                            y = minimatrixbispo[1][1];
-                            dstx = minimatrixtorre[0][0];
-                            dsty = minimatrixtorre[0][1];
+                            x = minimatrixbispo[0][0];
+                            y = minimatrixbispo[0][1];
+                            dstx = minimatrixtorre[1][0];
+                            dsty = minimatrixtorre[1][1];
                             if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
-                                x = minimatrixbispo[1][0];
-                                y = minimatrixbispo[1][1];
+                                x = minimatrixbispo[0][0];
+                                y = minimatrixbispo[0][1];
                                 chessboard[y][x] = Reset;
                                 x = rn.nextInt(8);
                                 y = rn.nextInt(8);
-                                minimatrixbispo[1][0] = x;
-                                minimatrixbispo[1][1] = y;
+                                minimatrixbispo[0][0] = x;
+                                minimatrixbispo[0][1] = y;
                                 chessboard[y][x] = Bispo;
                                 clean = false;
                                 assignment = true;
@@ -211,8 +215,8 @@ public class Xadrez {
                             else {
                                 x = minimatrixbispo[1][0];
                                 y = minimatrixbispo[1][1];
-                                dstx = minimatrixtorre[1][0];
-                                dsty = minimatrixtorre[1][1];
+                                dstx = minimatrixtorre[0][0];
+                                dsty = minimatrixtorre[0][1];
                                 if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
                                     x = minimatrixbispo[1][0];
                                     y = minimatrixbispo[1][1];
@@ -226,38 +230,61 @@ public class Xadrez {
                                     assignment = true;
                                 }
                                 else {
-                                    assignment = false;
-                                }   
-                            }    
+                                    x = minimatrixbispo[1][0];
+                                    y = minimatrixbispo[1][1];
+                                    dstx = minimatrixtorre[1][0];
+                                    dsty = minimatrixtorre[1][1];
+                                    if ( (Math.abs(x - dstx))==(Math.abs(y - dsty))) {
+                                        x = minimatrixbispo[1][0];
+                                        y = minimatrixbispo[1][1];
+                                        chessboard[y][x] = Reset;
+                                        x = rn.nextInt(8);
+                                        y = rn.nextInt(8);
+                                        minimatrixbispo[1][0] = x;
+                                        minimatrixbispo[1][1] = y;
+                                        chessboard[y][x] = Bispo;
+                                        clean = false;
+                                        assignment = true;
+                                    }
+                                    else {
+                                        assignment = false;
+                                    }   
+                                }    
+                            }
                         }
                     }
+                }   
+            }
+            
+            //Fazer as intersecções
+            
+            System.out.println("");
+            System.out.println("Matriz Final");
+            for (int i=0; i < n; i++) {
+                for(int j=0; j<n; j++){
+                    System.out.print(chessboard[i][j] + " ");
                 }
-            }   
-        }
-        System.out.println("");
-        System.out.println("Matriz Final");
-        for (int i=0; i < n; i++) {
-            for(int j=0; j<n; j++){
-                System.out.print(chessboard[i][j] + " ");
+                System.out.print("\n");
             }
-            System.out.print("\n");
-        }
-        System.out.println("");
-        System.out.println("Mini-Matriz das Torres");
-        int h=2;
-        for (int i=0; i < h; i++) {
-            for(int j=0; j<h; j++){
-                System.out.print(minimatrixtorre[i][j] + " ");
+            System.out.println("");
+            System.out.println("Mini-Matriz das Torres");
+            int h=2;
+            for (int i=0; i < h; i++) {
+                for(int j=0; j<h; j++){
+                    System.out.print(minimatrixtorre[i][j] + " ");
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
-        }
-        System.out.println("");
-        System.out.println("Mini-Matriz dos Bispos");
-        for (int i=0; i < h; i++) {
-            for(int j=0; j<h; j++){
-                System.out.print(minimatrixbispo[i][j] + " ");
+            System.out.println("");
+            System.out.println("Mini-Matriz dos Bispos");
+            for (int i=0; i < h; i++) {
+                for(int j=0; j<h; j++){
+                    System.out.print(minimatrixbispo[i][j] + " ");
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
+            End = in.nextLine();
+            End = End.toLowerCase();
         }
     }
 }
