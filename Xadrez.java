@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Xadrez {
     public static void main (String args[]) {
@@ -18,16 +19,22 @@ public class Xadrez {
         };
         int [][] minimatrixtorre = new int[2][2];
         int [][] minimatrixbispo = new int[2][2];
+        ArrayList<String> CoorTorre1 = new ArrayList<>();
+        ArrayList<String> CoorTorre2 = new ArrayList<>();
+        ArrayList<String> CoorBispo1 = new ArrayList<>();
+        ArrayList<String> CoorBispo2 = new ArrayList<>();
+        ArrayList<String> CoorIguais = new ArrayList<>();
         
         int x, y, k, n, dstx, dsty;
-        char Torre, Bispo, Reset;
+        char Torre, Bispo, Reset, Ataque1, Ataque2;
         boolean assignment, clean;
         String End;
         
         Torre = 'T';
         Bispo = 'B';
         Reset = 'o';
-        k = 0;
+        Ataque1 = '-';
+        Ataque2 = '+';
         n = 8;
         assignment = true;
         clean = true;
@@ -257,7 +264,161 @@ public class Xadrez {
             }
             
             //Fazer as intersecções
-            
+            for (int i=0; i<4; i++) {
+                if (i == 0) {
+                    x = minimatrixtorre[0][0];
+                    y = minimatrixtorre[0][1];
+                    for (int j=0; j<8; j++) {
+                        for (int h=0; h<8; h++) {
+                            if ( j == x || h == y) {
+                                CoorTorre1.add(j + " " + h);
+                                if (x == j && y == h){
+                                    CoorTorre1.remove(x + " " + y);
+                                }
+                            }
+                            else {
+                            }
+                        }
+                    }
+                }
+                if (i == 1) {
+                    x = minimatrixtorre[1][0];
+                    y = minimatrixtorre[1][1];
+                    for (int j=0; j<8; j++) {
+                        for (int h=0; h<8; h++) {
+                            if ( j == x || h == y) {
+                                CoorTorre2.add(j + " " + h);
+                                if (x == j && y == h){
+                                    CoorTorre2.remove(x + " " + y);
+                                }
+                            }
+                            else {
+                            }
+                        }
+                    }
+                }
+                if (i==2) {
+                    x = minimatrixbispo[0][0];
+                    y = minimatrixbispo[0][1];
+                    for (int j=0; j<8; j++) {
+                        for (int h=0; h<8; h++) {
+                            if (Math.abs(j - x) == Math.abs(h - y)) {
+                                CoorBispo1.add(j + " " + h);
+                                if (x == j && y == h){
+                                    CoorBispo1.remove(x + " " + y);
+                                }
+                            }
+                            else {
+                            }
+                        }
+                    }
+                }
+                if (i==3) {
+                    x = minimatrixbispo[1][0];
+                    y = minimatrixbispo[1][1];
+                    for (int j=0; j<8; j++) {
+                        for (int h=0; h<8; h++) {
+                            if (Math.abs(j - x)==Math.abs(h - y)) {
+                                CoorBispo2.add(j + " " + h);
+                                if (x == j && y == h){
+                                    CoorBispo2.remove(x + " " + y);
+                                }
+                            }
+                            else {
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i=0; i<6; i++) {
+                if (i==0) {
+                    for (int j=0; j<CoorTorre1.size(); j++) {
+                        for (int h=0; h<CoorTorre2.size(); h++) {
+                            if (CoorTorre1.get(j)==CoorTorre2.get(h)) {
+                                CoorIguais.add(CoorTorre1.get(j));
+                            }
+                        }
+                    }
+                }
+                if (i==1) {
+                    for (int j=0; j<CoorTorre1.size(); j++) {
+                        for (int h=0; h<CoorBispo1.size(); h++) {
+                            if (CoorTorre1.get(j).equals(CoorBispo1.get(h))) {
+                                CoorIguais.add(CoorTorre1.get(j));
+                            }
+                        }
+                    }
+                }
+                if (i==2) {
+                    for (int j=0; j<CoorTorre1.size(); j++) {
+                        for (int h=0; h<CoorBispo2.size(); h++) {
+                            if (CoorTorre1.get(j).equals(CoorBispo2.get(h))) {
+                                CoorIguais.add(CoorTorre1.get(j));
+                            }
+                        }
+                    }
+                }
+                if (i==3) {
+                    for (int j=0; j<CoorTorre2.size(); j++) {
+                        for (int h=0; h<CoorBispo1.size(); h++) {
+                            if (CoorTorre2.get(j).equals(CoorBispo1.get(h))) {
+                                CoorIguais.add(CoorTorre2.get(j));
+                            }
+                        }
+                    }
+                }
+                if (i==4) {
+                    for (int j=0; j<CoorTorre2.size(); j++) {
+                        for (int h=0; h<CoorBispo2.size(); h++) {
+                            if (CoorTorre2.get(j).equals(CoorBispo2.get(h))) {
+                                CoorIguais.add(CoorTorre2.get(j));
+                            }
+                        }
+                    }
+                }
+                if (i==5) {
+                    for (int j=0; j<CoorBispo1.size(); j++) {
+                        for (int h=0; h<CoorBispo2.size(); h++) {
+                            if (CoorBispo1.get(j).equals(CoorBispo2.get(h))) {
+                                CoorIguais.add(CoorBispo1.get(j));
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i=0; i<CoorIguais.size(); i++){
+                for(int j=0; j<CoorIguais.size(); j++) {
+                    if (CoorIguais.get(i).equals(CoorIguais.get(j))) {
+                        String aux = CoorIguais.get(i);
+                        String[] split = aux.split(" ");
+                        x = Integer.parseInt(split[0]);
+                        y = Integer.parseInt(split[1]);
+                        chessboard[y][x] = Ataque2;
+                        System.out.println("fy");
+                        continue;
+                    }
+                    if (i==j) {
+                        continue;
+                    }
+                    else {
+                        String aux = CoorIguais.get(i);
+                        String[] split = aux.split(" ");
+                        x = Integer.parseInt(split[0]);
+                        y = Integer.parseInt(split[1]);
+                        chessboard[y][x] = Ataque1;
+                    } 
+                }
+            }
+            System.out.println("");
+            System.out.println(CoorTorre1);
+            System.out.println("");
+            System.out.println(CoorTorre2);
+            System.out.println("");
+            System.out.println(CoorBispo1);
+            System.out.println("");
+            System.out.println(CoorBispo2);
+            System.out.println("");
+            System.out.println(CoorIguais);
             System.out.println("");
             System.out.println("Matriz Final");
             for (int i=0; i < n; i++) {
@@ -285,6 +446,11 @@ public class Xadrez {
             }
             End = in.nextLine();
             End = End.toLowerCase();
+            CoorBispo1.clear();
+            CoorBispo2.clear();
+            CoorTorre1.clear();
+            CoorTorre2.clear();
+            CoorIguais.clear();
         }
     }
 }
