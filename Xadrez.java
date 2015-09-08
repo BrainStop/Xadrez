@@ -24,6 +24,7 @@ public class Xadrez {
         ArrayList<String> CoorBispo1 = new ArrayList<>();
         ArrayList<String> CoorBispo2 = new ArrayList<>();
         ArrayList<String> CoorIguais = new ArrayList<>();
+        ArrayList<String> auxil = new ArrayList<>();
         
         int x, y, k, n, dstx, dsty;
         char Torre, Bispo, Reset, Ataque1, Ataque2;
@@ -88,6 +89,7 @@ public class Xadrez {
                 clean = true;
             }
             while (assignment) {
+                //Esta zona serve para limpar a matriz e tornar a colocar os valores na matriz para não ficar com 3 B's ou 3 T's
                 if (clean == false) {
                     clean = true;
                     for (int i = 0; i < n; i++) {
@@ -120,6 +122,7 @@ public class Xadrez {
                         }  
                     }
                 }
+                //Aqui verifica se as peças estão com obstruções e se no caso de haver obstruções muda fazendo random
                 if (minimatrixtorre[0][0]==minimatrixtorre[1][0] || minimatrixtorre[0][1] == minimatrixtorre[1][1]) {
                     x = minimatrixtorre[1][0];
                     y = minimatrixtorre[1][1];
@@ -263,7 +266,7 @@ public class Xadrez {
                 }   
             }
             
-            //Fazer as intersecções
+            //Aqui obtém todas as coordenadas possíveis para as Torres e os Bispos e adiciona-as em 4 ArrayList (CoorTorre1, CoorTorre2, CoorBispo1, CoorBispo2)
             for (int i=0; i<4; i++) {
                 if (i == 0) {
                     x = minimatrixtorre[0][0];
@@ -330,11 +333,12 @@ public class Xadrez {
                     }
                 }
             }
+            //Aqui verifica as 4 ArrayList entre si e vê quais as coordenadas são iguais entre si, as coordenadas iguais vão para a ArrayList CoorIguais
             for (int i=0; i<6; i++) {
                 if (i==0) {
                     for (int j=0; j<CoorTorre1.size(); j++) {
                         for (int h=0; h<CoorTorre2.size(); h++) {
-                            if (CoorTorre1.get(j)==CoorTorre2.get(h)) {
+                            if (CoorTorre1.get(j).equals(CoorTorre2.get(h))) {
                                 CoorIguais.add(CoorTorre1.get(j));
                             }
                         }
@@ -386,37 +390,53 @@ public class Xadrez {
                     }
                 }
             }
+            //Aqui coloca os + e os - na matriz principal
+            
+            //Work in progress
             for (int i=0; i<CoorIguais.size(); i++){
+                String aux = CoorIguais.get(i);
+                String[] split = aux.split(" ");
+                x = Integer.parseInt(split[0]);
+                y = Integer.parseInt(split[1]);
+                chessboard[y][x] = Ataque1;
+            }
+            /*for (int i=0; i<CoorIguais.size(); i++){
                 for(int j=0; j<CoorIguais.size(); j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    if(CoorBispo1.get(i).equals(CoorBispo2.get(j))) {
+                        auxil.add(CoorBispo1.get(i));
+                    }
+                }
+            }*/
+            System.out.println(auxil);  
+            /*for (int i=0; i<CoorIguais.size(); i++){
+                for(int j=0; j<CoorIguais.size(); j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    if (!CoorIguais.get(i).equals(CoorIguais.get(j))) {
+                        String aux = CoorIguais.get(i);
+                        String[] split = aux.split(" ");
+                        x = Integer.parseInt(split[0]);
+                        y = Integer.parseInt(split[1]);
+                        chessboard[y][x] = Ataque1;
+                    }
                     if (CoorIguais.get(i).equals(CoorIguais.get(j))) {
                         String aux = CoorIguais.get(i);
                         String[] split = aux.split(" ");
                         x = Integer.parseInt(split[0]);
                         y = Integer.parseInt(split[1]);
                         chessboard[y][x] = Ataque2;
-                        System.out.println("fy");
-                        continue;
-                    }
-                    if (i==j) {
-                        continue;
-                    }
-                    else {
-                        String aux = CoorIguais.get(i);
-                        String[] split = aux.split(" ");
-                        x = Integer.parseInt(split[0]);
-                        y = Integer.parseInt(split[1]);
-                        chessboard[y][x] = Ataque1;
                     } 
                 }
-            }
+            }*/
+            //Esta zona apresenta a matriz com as Torres e os Bispos colocados e com os + e os -
             System.out.println("");
             System.out.println(CoorTorre1);
             System.out.println("");
             System.out.println(CoorTorre2);
-            System.out.println("");
-            System.out.println(CoorBispo1);
-            System.out.println("");
-            System.out.println(CoorBispo2);
             System.out.println("");
             System.out.println(CoorIguais);
             System.out.println("");
@@ -444,6 +464,7 @@ public class Xadrez {
                 }
                 System.out.print("\n");
             }
+            //Aqui faz uma preparação para a próxima execução limpando tudo para obter novos valores
             End = in.nextLine();
             End = End.toLowerCase();
             CoorBispo1.clear();
@@ -453,5 +474,4 @@ public class Xadrez {
             CoorIguais.clear();
         }
     }
-}
-        
+}     
