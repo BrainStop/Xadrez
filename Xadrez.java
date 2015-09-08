@@ -1,6 +1,8 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Xadrez {
     public static void main (String args[]) {
@@ -42,9 +44,9 @@ public class Xadrez {
         End = "";
         
         while (!End.equals("fim")) {
-            
+            //Aqui coloca nas coordenadas aleatórias as primeiras coordenadas
             for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++){
+                for (int j = 0; j < 8; j++){    //Aqui faz reset da matriz para colocar novas coordenadas no caso de não ter colocado "fim"
                     chessboard[i][j] = Reset;
                 }
             }
@@ -391,8 +393,7 @@ public class Xadrez {
                 }
             }
             //Aqui coloca os + e os - na matriz principal
-            
-            //Work in progress
+            //Primeiro coloca os - indiscrimadamente
             for (int i=0; i<CoorIguais.size(); i++){
                 String aux = CoorIguais.get(i);
                 String[] split = aux.split(" ");
@@ -400,45 +401,28 @@ public class Xadrez {
                 y = Integer.parseInt(split[1]);
                 chessboard[y][x] = Ataque1;
             }
-            /*for (int i=0; i<CoorIguais.size(); i++){
+            //Depois verifica quais são iguais e coloca numa ArrayList auxiliar
+            for (int i=0; i<CoorIguais.size(); i++){
                 for(int j=0; j<CoorIguais.size(); j++) {
-                    if (i == j) {
+                    if (i == j ) {
                         continue;
                     }
-                    if(CoorBispo1.get(i).equals(CoorBispo2.get(j))) {
-                        auxil.add(CoorBispo1.get(i));
+                    if(CoorIguais.get(i).equals(CoorIguais.get(j))) {
+                        auxil.add(CoorIguais.get(i));
+                        
                     }
                 }
-            }*/
-            System.out.println(auxil);  
-            /*for (int i=0; i<CoorIguais.size(); i++){
-                for(int j=0; j<CoorIguais.size(); j++) {
-                    if (i == j) {
-                        continue;
-                    }
-                    if (!CoorIguais.get(i).equals(CoorIguais.get(j))) {
-                        String aux = CoorIguais.get(i);
-                        String[] split = aux.split(" ");
-                        x = Integer.parseInt(split[0]);
-                        y = Integer.parseInt(split[1]);
-                        chessboard[y][x] = Ataque1;
-                    }
-                    if (CoorIguais.get(i).equals(CoorIguais.get(j))) {
-                        String aux = CoorIguais.get(i);
-                        String[] split = aux.split(" ");
-                        x = Integer.parseInt(split[0]);
-                        y = Integer.parseInt(split[1]);
-                        chessboard[y][x] = Ataque2;
-                    } 
-                }
-            }*/
+            }
+            //Remove repetidos e coloca os +
+            Set<String> unique = new HashSet<String>(auxil);
+            for (int i=0; i<unique.size(); i++) {
+                String aux = CoorIguais.get(i);
+                String[] split = aux.split(" ");
+                x = Integer.parseInt(split[0]);
+                y = Integer.parseInt(split[1]);
+                chessboard[y][x] = Ataque2;
+            }
             //Esta zona apresenta a matriz com as Torres e os Bispos colocados e com os + e os -
-            System.out.println("");
-            System.out.println(CoorTorre1);
-            System.out.println("");
-            System.out.println(CoorTorre2);
-            System.out.println("");
-            System.out.println(CoorIguais);
             System.out.println("");
             System.out.println("Matriz Final");
             for (int i=0; i < n; i++) {
@@ -472,6 +456,7 @@ public class Xadrez {
             CoorTorre1.clear();
             CoorTorre2.clear();
             CoorIguais.clear();
+            auxil.clear();
         }
     }
 }     
